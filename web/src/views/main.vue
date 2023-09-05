@@ -23,8 +23,6 @@
 import {defineComponent, ref} from 'vue';
 import TheHeaderView from "@/components/the-header";
 import TheSiderView from "@/components/the-sider";
-import axios from "axios";
-import {notification} from "ant-design-vue";
 
 export default defineComponent({
   name: "login-view",
@@ -32,14 +30,14 @@ export default defineComponent({
 
   setup() {
     const count = ref(0);
-    axios.get("/member/member/count").then((response) => {
-      let data = response.data;
-      if (data.success) {
-        count.value = data.content;
-      } else {
-        notification.error({description: data.message});
-      }
-    });
+    // axios.get("/member/member/count").then((response) => {
+    //   let data = response.data;
+    //   if (data.success) {
+    //     count.value = data.content;
+    //   } else {
+    //     notification.error({description: data.message});
+    //   }
+    // });
     return {
       count
     };
