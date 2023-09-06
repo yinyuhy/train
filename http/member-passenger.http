@@ -1,0 +1,28 @@
+POST http://localhost:8001/member/passenger/save
+Content-Type: application/json
+
+{
+  "memberId": "1",
+  "name": "yinyu",
+  "idCard": "41040219990515551X",
+  "type": "1"
+}
+
+
+###
+POST http://localhost:8000/member/member/send-code
+Content-Type: application/x-www-form-urlencoded
+
+mobile=13000000005
+
+###
+POST http://localhost:8000/member/member/login
+Content-Type: application/json
+
+{
+  "mobile": "13000000005",
+  "code" : "8888"
+}
+###
+
+###
