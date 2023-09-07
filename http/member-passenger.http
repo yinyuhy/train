@@ -13,3 +13,16 @@ token:{{token}}
 GET http://localhost:8000/member/passenger/query-list?page=1&size=3
 Content-Type: application/json
 token:{{token}}
+
+###
+POST http://localhost:8000/member/passenger/save
+Content-Type: application/json
+token:{{token}}
+
+{
+  "id": 1699408623752581120,
+  "memberId": 1697813627668664320,
+  "name": "james",
+  "idCard": "410402199905155510",
+  "type": "2"
+}
