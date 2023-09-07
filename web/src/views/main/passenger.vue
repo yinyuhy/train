@@ -75,7 +75,7 @@ export default defineComponent({
     const pagination = ref({
       total: 0,
       current: 1,
-      pageSize: 10,
+      pageSize: 2,
     });
     let loading = ref(false);
     const columns = [
@@ -169,7 +169,7 @@ export default defineComponent({
     };
 
     const handleTableChange = (pagination) => {
-      // console.log("看看自带的分页参数都有啥：" + pagination);
+      console.log("看看自带的分页参数都有啥：" + pagination);
       handleQuery({
         page: pagination.current,
         size: pagination.pageSize
