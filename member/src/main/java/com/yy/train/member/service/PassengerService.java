@@ -4,7 +4,9 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjUtil;
 import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.yy.train.common.context.LoginMemberContext;
+import com.yy.train.common.resp.PageResp;
 import com.yy.train.common.util.SnowUtil;
 import com.yy.train.member.domain.Passenger;
 import com.yy.train.member.domain.PassengerExample;
@@ -37,15 +39,27 @@ public class PassengerService {
         passengerMapper.insert(passenger);
     }
 
-    public List<PassengerQueryResp> queryList(PassengerQueryReq passengerQueryReq) {
+    public PageResp<PassengerQueryResp> queryList(PassengerQueryReq passengerQueryReq) {
         PassengerExample passengerExample = new PassengerExample();
         PassengerExample.Criteria criteria = passengerExample.createCriteria();
         if (ObjUtil.isNotNull(passengerQueryReq.getMemberId())) {
             criteria.andMemberIdEqualTo(passengerQueryReq.getMemberId());
         }
+
+        LOG.info("查询页码：{}", passengerQueryReq.getPage());
+        LOG.info("查询条数：{}", passengerQueryReq.getSize());
         PageHelper.startPage(passengerQueryReq.getPage(), passengerQueryReq.getSize());
         List<Passenger> passengers = passengerMapper.selectByExample(passengerExample);
+
+        PageInfo<Passenger> pageInfo = new PageInfo<>(passengers);
+        LOG.info("总行数：{}", pageInfo.getTotal());
+        LOG.info("总页数：{}", pageInfo.getPages());
+
         List<PassengerQueryResp> passengerQueryResps = BeanUtil.copyToList(passengers, PassengerQueryResp.class);
-        return passengerQueryResps;
+
+        PageResp<PassengerQueryResp> pageResp = new PageResp<>();
+        pageResp.setList(passengerQueryResps);
+        pageResp.setTotal(pageInfo.getTotal());
+        return pageResp;
     }
 }
