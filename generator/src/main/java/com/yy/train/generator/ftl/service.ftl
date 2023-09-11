@@ -1,19 +1,18 @@
-package com.yy.train.member.service;
+package com.yy.train.${module}.service;
 
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yy.train.common.context.LoginMemberContext;
 import com.yy.train.common.resp.PageResp;
 import com.yy.train.common.util.SnowUtil;
-import com.yy.train.member.domain.${Domain};
-import com.yy.train.member.domain.${Domain}Example;
-import com.yy.train.member.mapper.${Domain}Mapper;
-import com.yy.train.member.req.${Domain}QueryReq;
-import com.yy.train.member.req.${Domain}SaveReq;
-import com.yy.train.member.resp.${Domain}QueryResp;
+import com.yy.train.${module}.domain.${Domain};
+import com.yy.train.${module}.domain.${Domain}Example;
+import com.yy.train.${module}.mapper.${Domain}Mapper;
+import com.yy.train.${module}.req.${Domain}QueryReq;
+import com.yy.train.${module}.req.${Domain}SaveReq;
+import com.yy.train.${module}.resp.${Domain}QueryResp;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +33,6 @@ public class ${Domain}Service {
         ${Domain} ${domain} = BeanUtil.copyProperties(${domain}Req, ${Domain}.class);
         if (ObjUtil.isNull(${domain}Req.getId())) {
             ${domain}.setId(SnowUtil.getSnowflakeNextId());
-            ${domain}.setMemberId(LoginMemberContext.getId());
             ${domain}.setCreateTime(now);
             ${domain}.setUpdateTime(now);
             ${domain}Mapper.insert(${domain});
@@ -49,9 +47,6 @@ public class ${Domain}Service {
         ${Domain}Example ${domain}Example = new ${Domain}Example();
         ${domain}Example.setOrderByClause("id desc");
         ${Domain}Example.Criteria criteria = ${domain}Example.createCriteria();
-        if (ObjUtil.isNotNull(${domain}QueryReq.getMemberId())) {
-            criteria.andMemberIdEqualTo(${domain}QueryReq.getMemberId());
-        }
 
         LOG.info("查询页码：{}", ${domain}QueryReq.getPage());
         LOG.info("查询条数：{}", ${domain}QueryReq.getSize());
