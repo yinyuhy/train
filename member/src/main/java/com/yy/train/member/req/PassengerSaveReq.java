@@ -2,26 +2,49 @@ package com.yy.train.member.req;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.Date;
 
 public class PassengerSaveReq {
+
+    /**
+     * id
+     */
     private Long id;
 
+    /**
+     * 會員id
+     */
     private Long memberId;
 
-    @NotBlank(message = "【乘客姓名】不能为空")
+    /**
+     * 姓名
+     */
+    @NotBlank(message = "【姓名】不能为空")
     private String name;
 
-    @NotBlank(message = "【身份证号】不能为空")
+    /**
+     * 身份證
+     */
+    @NotBlank(message = "【身份證】不能为空")
     private String idCard;
 
-    @NotBlank(message = "【旅客类型】不能为空")
+    /**
+     * 旅客類型|枚舉【PassengerTypeEnum】
+     */
+    @NotBlank(message = "【旅客類型】不能为空")
     private String type;
 
+    /**
+     * 新增時間
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
 
+    /**
+     * 修改時間
+     */
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date updateTime;
 
