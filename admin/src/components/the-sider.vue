@@ -20,6 +20,11 @@
           <border-outer-outlined /> &nbsp; 车站管理
         </router-link>
       </a-menu-item>
+      <a-menu-item key="/train">
+        <router-link to="/train">
+          <border-outer-outlined /> &nbsp; 火车管理
+        </router-link>
+      </a-menu-item>
     </a-menu>
   </a-layout-sider>
 </template>
