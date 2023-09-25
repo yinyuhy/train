@@ -3,6 +3,7 @@ package com.yy.train.business.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yy.train.common.resp.PageResp;
@@ -45,8 +46,11 @@ public class TrainSeatService {
 
     public PageResp<TrainSeatQueryResp> queryList(TrainSeatQueryReq trainSeatQueryReq) {
         TrainSeatExample trainSeatExample = new TrainSeatExample();
-        trainSeatExample.setOrderByClause("id desc");
+        trainSeatExample.setOrderByClause("train_code asc, carriage_index asc, carriage_seat_index asc");
         TrainSeatExample.Criteria criteria = trainSeatExample.createCriteria();
+        if (ObjectUtil.isNotEmpty(trainSeatQueryReq.getTrainCode())) {
+            criteria.andTrainCodeEqualTo(trainSeatQueryReq.getTrainCode());
+        }
 
         LOG.info("查询页码：{}", trainSeatQueryReq.getPage());
         LOG.info("查询条数：{}", trainSeatQueryReq.getSize());
