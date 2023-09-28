@@ -3,7 +3,9 @@ package com.yy.train.common.exception;
 public enum BuisnessExceptionEnum {
     MEMBER_MOBILE_EXIST("电话号已经被注册"),
     MEMBER_MOBILE_NOT_EXIST("请先完成发送短信验证码的功能"),
-    MEMBER_MOBILE_CODE_ERROR("短信验证码输入错误");
+    MEMBER_MOBILE_CODE_ERROR("短信验证码输入错误"),
+
+    BUSINESS_STATION_NAME_UNIQUE_ERROR("车站已存在");
 
     private String desc;
 
