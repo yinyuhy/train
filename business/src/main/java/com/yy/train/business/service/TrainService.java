@@ -1,18 +1,21 @@
 package com.yy.train.business.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yy.train.common.resp.PageResp;
-import com.yy.train.common.util.SnowUtil;
 import com.yy.train.business.domain.Train;
 import com.yy.train.business.domain.TrainExample;
 import com.yy.train.business.mapper.TrainMapper;
 import com.yy.train.business.req.TrainQueryReq;
 import com.yy.train.business.req.TrainSaveReq;
 import com.yy.train.business.resp.TrainQueryResp;
+import com.yy.train.common.exception.BuisnessException;
+import com.yy.train.common.exception.BuisnessExceptionEnum;
+import com.yy.train.common.resp.PageResp;
+import com.yy.train.common.util.SnowUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +35,11 @@ public class TrainService {
         DateTime now = DateTime.now();
         Train train = BeanUtil.copyProperties(trainReq, Train.class);
         if (ObjUtil.isNull(trainReq.getId())) {
+            //判断车站唯一键是否存在
+            Train carriageDB = selectByUnique(trainReq.getCode());
+            if (ObjUtil.isNotEmpty(carriageDB)) {
+                throw new BuisnessException(BuisnessExceptionEnum.BUSINESS_TRAIN_CODE_UNIQUE_ERROR);
+            }
             train.setId(SnowUtil.getSnowflakeNextId());
             train.setCreateTime(now);
             train.setUpdateTime(now);
@@ -41,6 +49,17 @@ public class TrainService {
             trainMapper.updateByPrimaryKey(train);
         }
 
+    }
+
+    private Train selectByUnique(String code) {
+        TrainExample trainExample = new TrainExample();
+        trainExample.createCriteria().andCodeEqualTo(code);
+        List<Train> trains = trainMapper.selectByExample(trainExample);
+        if (CollUtil.isNotEmpty(trains)) {
+            return trains.get(0);
+        }
+
+        return null;
     }
 
     public PageResp<TrainQueryResp> queryList(TrainQueryReq trainQueryReq) {

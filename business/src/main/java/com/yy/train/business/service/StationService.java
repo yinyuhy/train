@@ -36,10 +36,8 @@ public class StationService {
         Station station = BeanUtil.copyProperties(stationReq, Station.class);
         if (ObjUtil.isNull(stationReq.getId())) {
             //判断车站唯一键是否存在
-            StationExample stationExample = new StationExample();
-            stationExample.createCriteria().andNameEqualTo(stationReq.getName());
-            List<Station> stations = stationMapper.selectByExample(stationExample);
-            if (CollUtil.isNotEmpty(stations)) {
+            Station stationDB = selectByUnique(stationReq.getName());
+            if (ObjUtil.isNotEmpty(stationDB)) {
                 throw new BuisnessException(BuisnessExceptionEnum.BUSINESS_STATION_NAME_UNIQUE_ERROR);
             }
 
@@ -52,6 +50,17 @@ public class StationService {
             stationMapper.updateByPrimaryKey(station);
         }
 
+    }
+
+    private Station selectByUnique(String name) {
+        StationExample stationExample = new StationExample();
+        stationExample.createCriteria().andNameEqualTo(name);
+        List<Station> stations = stationMapper.selectByExample(stationExample);
+        if (CollUtil.isNotEmpty(stations)) {
+            return stations.get(0);
+        }
+
+        return null;
     }
 
     public PageResp<StationQueryResp> queryList(StationQueryReq stationQueryReq) {

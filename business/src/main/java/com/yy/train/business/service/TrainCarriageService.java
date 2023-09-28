@@ -1,6 +1,7 @@
 package com.yy.train.business.service;
 
 import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.date.DateTime;
 import cn.hutool.core.util.ObjUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -13,6 +14,8 @@ import com.yy.train.business.mapper.TrainCarriageMapper;
 import com.yy.train.business.req.TrainCarriageQueryReq;
 import com.yy.train.business.req.TrainCarriageSaveReq;
 import com.yy.train.business.resp.TrainCarriageQueryResp;
+import com.yy.train.common.exception.BuisnessException;
+import com.yy.train.common.exception.BuisnessExceptionEnum;
 import com.yy.train.common.resp.PageResp;
 import com.yy.train.common.util.SnowUtil;
 import jakarta.annotation.Resource;
@@ -40,6 +43,12 @@ public class TrainCarriageService {
 
         TrainCarriage trainCarriage = BeanUtil.copyProperties(trainCarriageReq, TrainCarriage.class);
         if (ObjUtil.isNull(trainCarriageReq.getId())) {
+
+            //判断车站唯一键是否存在
+            TrainCarriage carriageDB = selectByUnique(trainCarriageReq.getTrainCode(), trainCarriageReq.getIndex());
+            if (ObjUtil.isNotEmpty(carriageDB)) {
+                throw new BuisnessException(BuisnessExceptionEnum.BUSINESS_TRAIN_CARRIAGE_INDEX_UNIQUE_ERROR);
+            }
             trainCarriage.setId(SnowUtil.getSnowflakeNextId());
             trainCarriage.setCreateTime(now);
             trainCarriage.setUpdateTime(now);
@@ -49,6 +58,17 @@ public class TrainCarriageService {
             trainCarriageMapper.updateByPrimaryKey(trainCarriage);
         }
 
+    }
+
+    private TrainCarriage selectByUnique(String trainCode, Integer index) {
+        TrainCarriageExample trainCarriageExample = new TrainCarriageExample();
+        trainCarriageExample.createCriteria().andTrainCodeEqualTo(trainCode).andIndexEqualTo(index);
+        List<TrainCarriage> trainCarriages = trainCarriageMapper.selectByExample(trainCarriageExample);
+        if (CollUtil.isNotEmpty(trainCarriages)) {
+            return trainCarriages.get(0);
+        }
+
+        return null;
     }
 
     public PageResp<TrainCarriageQueryResp> queryList(TrainCarriageQueryReq trainCarriageQueryReq) {
