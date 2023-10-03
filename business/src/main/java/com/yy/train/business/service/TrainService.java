@@ -64,7 +64,7 @@ public class TrainService {
 
     public PageResp<TrainQueryResp> queryList(TrainQueryReq trainQueryReq) {
         TrainExample trainExample = new TrainExample();
-        trainExample.setOrderByClause("id desc");
+        trainExample.setOrderByClause("code asc");
         TrainExample.Criteria criteria = trainExample.createCriteria();
 
         LOG.info("查询页码：{}", trainQueryReq.getPage());
