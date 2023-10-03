@@ -28,6 +28,11 @@
             <border-outer-outlined /> &nbsp; 每日车次
           </router-link>
         </a-menu-item>
+        <a-menu-item key="/business/daily-train-station">
+          <router-link to="/business/daily-train-station">
+            <border-outer-outlined /> &nbsp; 每日车站
+          </router-link>
+        </a-menu-item>
       </a-sub-menu>
       <a-sub-menu key="batch">
         <template #title>
