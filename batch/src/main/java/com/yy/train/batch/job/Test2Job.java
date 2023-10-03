@@ -7,12 +7,12 @@ import org.quartz.JobExecutionException;
 
 //禁止任务并发执行
 @DisallowConcurrentExecution
-public class TestJob implements Job {
+public class Test2Job implements Job {
 
 
     @Override
     public void execute(JobExecutionContext jobExecutionContext) throws JobExecutionException {
-        System.out.println("quartz job 开始");
-        System.out.println("quartz job 结束");
+        System.out.println("quartz job2222 开始");
+        System.out.println("quartz job2222 结束");
     }
 }
