@@ -40,6 +40,9 @@ public class DailyTrainService {
     @Resource
     private DailyTrainStationService dailyTrainStationService;
 
+    @Resource
+    private DailyTrainCarriageService dailyTrainCarriageService;
+
     public void save(DailyTrainSaveReq dailyTrainReq) {
         DateTime now = DateTime.now();
         DailyTrain dailyTrain = BeanUtil.copyProperties(dailyTrainReq, DailyTrain.class);
@@ -118,5 +121,8 @@ public class DailyTrainService {
 
         //生成该车次车站数据
         dailyTrainStationService.genDaily(date, train.getCode());
+
+        //生成该车次车厢数据
+        dailyTrainCarriageService.genDaily(date, train.getCode());
     }
 }
