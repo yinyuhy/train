@@ -20,6 +20,7 @@ import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -88,13 +89,18 @@ public class TrainService {
         trainMapper.deleteByPrimaryKey(id);
     }
 
+    @Transactional
     public List<TrainQueryResp> queryAll() {
+        List<Train> trains = selectAll();
+        return BeanUtil.copyToList(trains, TrainQueryResp.class);
+    }
+
+    public List<Train> selectAll() {
         TrainExample trainExample = new TrainExample();
         trainExample.setOrderByClause("code asc");
         TrainExample.Criteria criteria = trainExample.createCriteria();
 
         List<Train> trains = trainMapper.selectByExample(trainExample);
-
-        return BeanUtil.copyToList(trains, TrainQueryResp.class);
+        return trains;
     }
 }
