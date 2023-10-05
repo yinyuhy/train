@@ -23,6 +23,11 @@
             业务管理
           </span>
         </template>
+        <a-menu-item key="/business/daily-train-ticket">
+          <router-link to="/business/daily-train-ticket">
+            <border-outer-outlined /> &nbsp; 每日余票
+          </router-link>
+        </a-menu-item>
         <a-menu-item key="/business/daily-train">
           <router-link to="/business/daily-train">
             <border-outer-outlined /> &nbsp; 每日车次
