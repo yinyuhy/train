@@ -12,8 +12,8 @@ import com.yy.train.business.mapper.StationMapper;
 import com.yy.train.business.req.StationQueryReq;
 import com.yy.train.business.req.StationSaveReq;
 import com.yy.train.business.resp.StationQueryResp;
-import com.yy.train.common.exception.BuisnessException;
-import com.yy.train.common.exception.BuisnessExceptionEnum;
+import com.yy.train.common.exception.BusinessException;
+import com.yy.train.common.exception.BusinessExceptionEnum;
 import com.yy.train.common.resp.PageResp;
 import com.yy.train.common.util.SnowUtil;
 import jakarta.annotation.Resource;
@@ -38,7 +38,7 @@ public class StationService {
             //判断车站唯一键是否存在
             Station stationDB = selectByUnique(stationReq.getName());
             if (ObjUtil.isNotEmpty(stationDB)) {
-                throw new BuisnessException(BuisnessExceptionEnum.BUSINESS_STATION_NAME_UNIQUE_ERROR);
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_STATION_NAME_UNIQUE_ERROR);
             }
 
             station.setId(SnowUtil.getSnowflakeNextId());

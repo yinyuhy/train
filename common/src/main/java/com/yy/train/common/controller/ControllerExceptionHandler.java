@@ -1,6 +1,6 @@
 package com.yy.train.common.controller;
 
-import com.yy.train.common.exception.BuisnessException;
+import com.yy.train.common.exception.BusinessException;
 import com.yy.train.common.resp.CommonResp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,9 +34,9 @@ public class ControllerExceptionHandler {
      * 业务异常统一处理
      * 只要出现异常，都会进入这个方法
      */
-    @ExceptionHandler(value = BuisnessException.class)
+    @ExceptionHandler(value = BusinessException.class)
     @ResponseBody
-    public CommonResp buisnessExceptionHandler(BuisnessException e) {
+    public CommonResp buisnessExceptionHandler(BusinessException e) {
         CommonResp commonResp = new CommonResp();
         LOG.error("业务异常：{}" , e.getE().getDesc());
         commonResp.setSuccess(false);

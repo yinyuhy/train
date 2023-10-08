@@ -12,8 +12,8 @@ import com.yy.train.business.mapper.TrainMapper;
 import com.yy.train.business.req.TrainQueryReq;
 import com.yy.train.business.req.TrainSaveReq;
 import com.yy.train.business.resp.TrainQueryResp;
-import com.yy.train.common.exception.BuisnessException;
-import com.yy.train.common.exception.BuisnessExceptionEnum;
+import com.yy.train.common.exception.BusinessException;
+import com.yy.train.common.exception.BusinessExceptionEnum;
 import com.yy.train.common.resp.PageResp;
 import com.yy.train.common.util.SnowUtil;
 import jakarta.annotation.Resource;
@@ -39,7 +39,7 @@ public class TrainService {
             //判断车站唯一键是否存在
             Train carriageDB = selectByUnique(trainReq.getCode());
             if (ObjUtil.isNotEmpty(carriageDB)) {
-                throw new BuisnessException(BuisnessExceptionEnum.BUSINESS_TRAIN_CODE_UNIQUE_ERROR);
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_TRAIN_CODE_UNIQUE_ERROR);
             }
             train.setId(SnowUtil.getSnowflakeNextId());
             train.setCreateTime(now);

@@ -3,8 +3,8 @@ package com.yy.train.member.service;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjUtil;
-import com.yy.train.common.exception.BuisnessException;
-import com.yy.train.common.exception.BuisnessExceptionEnum;
+import com.yy.train.common.exception.BusinessException;
+import com.yy.train.common.exception.BusinessExceptionEnum;
 import com.yy.train.common.util.JwtUtil;
 import com.yy.train.common.util.SnowUtil;
 import com.yy.train.member.domain.Member;
@@ -37,7 +37,7 @@ public class MemberService {
         String mobile = memberRegisterReq.getMobile();
         Member memberDB = selectByMobile(mobile);
         if (ObjUtil.isNotNull(memberDB)) {
-            throw new BuisnessException(BuisnessExceptionEnum.MEMBER_MOBILE_EXIST);
+            throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_EXIST);
         }
 
         Member member = new Member();
@@ -81,12 +81,12 @@ public class MemberService {
 
         //如果为空，则需要先注册
         if (ObjUtil.isNull(memberDB)) {
-            throw new BuisnessException(BuisnessExceptionEnum.MEMBER_MOBILE_NOT_EXIST);
+            throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_NOT_EXIST);
         }
 
         //如果短信验证码输入错误
         if (!"8888".equals(code)) {
-            throw new BuisnessException(BuisnessExceptionEnum.MEMBER_MOBILE_CODE_ERROR);
+            throw new BusinessException(BusinessExceptionEnum.MEMBER_MOBILE_CODE_ERROR);
         }
         MemberLoginResp memberLoginResp = BeanUtil.copyProperties(memberDB, MemberLoginResp.class);
         String token = JwtUtil.createToken(memberLoginResp.getId(), memberLoginResp.getMobile());

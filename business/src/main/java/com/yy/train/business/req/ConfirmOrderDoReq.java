@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
 
 import java.util.Date;
 import java.util.List;
 
+@Data
 public class ConfirmOrderDoReq {
-
 
     /**
      * 会员id
@@ -52,63 +53,6 @@ public class ConfirmOrderDoReq {
      */
     @NotEmpty(message = "【车票】不能为空")
     private List<ConfirmOrderTicketReq> tickets;
-
-    public List<ConfirmOrderTicketReq> getTickets() {
-        return tickets;
-    }
-
-    public ConfirmOrderDoReq setTickets(List<ConfirmOrderTicketReq> tickets) {
-        this.tickets = tickets;
-        return this;
-    }
-
-    public Long getMemberId() {
-        return memberId;
-    }
-
-    public void setMemberId(Long memberId) {
-        this.memberId = memberId;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getTrainCode() {
-        return trainCode;
-    }
-
-    public void setTrainCode(String trainCode) {
-        this.trainCode = trainCode;
-    }
-
-    public String getStart() {
-        return start;
-    }
-
-    public void setStart(String start) {
-        this.start = start;
-    }
-
-    public String getEnd() {
-        return end;
-    }
-
-    public void setEnd(String end) {
-        this.end = end;
-    }
-
-    public Long getDailyTrainTicketId() {
-        return dailyTrainTicketId;
-    }
-
-    public void setDailyTrainTicketId(Long dailyTrainTicketId) {
-        this.dailyTrainTicketId = dailyTrainTicketId;
-    }
 
     @Override
     public String toString() {

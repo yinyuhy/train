@@ -13,8 +13,8 @@ import com.yy.train.business.mapper.TrainStationMapper;
 import com.yy.train.business.req.TrainStationQueryReq;
 import com.yy.train.business.req.TrainStationSaveReq;
 import com.yy.train.business.resp.TrainStationQueryResp;
-import com.yy.train.common.exception.BuisnessException;
-import com.yy.train.common.exception.BuisnessExceptionEnum;
+import com.yy.train.common.exception.BusinessException;
+import com.yy.train.common.exception.BusinessExceptionEnum;
 import com.yy.train.common.resp.PageResp;
 import com.yy.train.common.util.SnowUtil;
 import jakarta.annotation.Resource;
@@ -39,12 +39,12 @@ public class TrainStationService {
             //判断车站唯一键是否存在
             TrainStation stationDB = selectByUnique(trainStationReq.getTrainCode(), trainStationReq.getIndex());
             if (ObjUtil.isNotEmpty(stationDB)) {
-                throw new BuisnessException(BuisnessExceptionEnum.BUSINESS_TRAIN_STATION_INDEX_UNIQUE_ERROR);
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_TRAIN_STATION_INDEX_UNIQUE_ERROR);
             }
             //判断车站唯一键是否存在
             stationDB = selectByUnique(trainStationReq.getTrainCode(), trainStationReq.getName());
             if (ObjUtil.isNotEmpty(stationDB)) {
-                throw new BuisnessException(BuisnessExceptionEnum.BUSINESS_TRAIN_STATION_NAME_UNIQUE_ERROR);
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_TRAIN_STATION_NAME_UNIQUE_ERROR);
             }
             trainStation.setId(SnowUtil.getSnowflakeNextId());
             trainStation.setCreateTime(now);

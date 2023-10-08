@@ -14,8 +14,8 @@ import com.yy.train.business.mapper.TrainCarriageMapper;
 import com.yy.train.business.req.TrainCarriageQueryReq;
 import com.yy.train.business.req.TrainCarriageSaveReq;
 import com.yy.train.business.resp.TrainCarriageQueryResp;
-import com.yy.train.common.exception.BuisnessException;
-import com.yy.train.common.exception.BuisnessExceptionEnum;
+import com.yy.train.common.exception.BusinessException;
+import com.yy.train.common.exception.BusinessExceptionEnum;
 import com.yy.train.common.resp.PageResp;
 import com.yy.train.common.util.SnowUtil;
 import jakarta.annotation.Resource;
@@ -47,7 +47,7 @@ public class TrainCarriageService {
             //判断车站唯一键是否存在
             TrainCarriage carriageDB = selectByUnique(trainCarriageReq.getTrainCode(), trainCarriageReq.getIndex());
             if (ObjUtil.isNotEmpty(carriageDB)) {
-                throw new BuisnessException(BuisnessExceptionEnum.BUSINESS_TRAIN_CARRIAGE_INDEX_UNIQUE_ERROR);
+                throw new BusinessException(BusinessExceptionEnum.BUSINESS_TRAIN_CARRIAGE_INDEX_UNIQUE_ERROR);
             }
             trainCarriage.setId(SnowUtil.getSnowflakeNextId());
             trainCarriage.setCreateTime(now);
