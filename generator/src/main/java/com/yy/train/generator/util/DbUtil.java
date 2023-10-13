@@ -12,8 +12,8 @@ import java.util.regex.Pattern;
 
 public class DbUtil {
 
-    public static String url = "jdbc:mysql://rm-bp1fczxwqdb49a84g2o.mysql.rds.aliyuncs.com/train_business?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai";
-    public static String user = "train_business";
+    public static String url = "jdbc:mysql://rm-bp1fczxwqdb49a84g2o.mysql.rds.aliyuncs.com/train_member?characterEncoding=UTF8&autoReconnect=true&serverTimezone=Asia/Shanghai";
+    public static String user = "train";
     public static String password = "Yy_19990515";
 
     public static Connection getConnection() {
