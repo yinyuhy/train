@@ -6,8 +6,8 @@
       </router-link>
     </div>
     <div style="float: right; color: white;">
-      您好: {{member.mobile}} &nbsp;&nbsp;
-      <router-link to="/login" style="color: white">
+      您好：{{member.mobile}} &nbsp;&nbsp;
+      <router-link to="/login" style="color: white;">
         退出登录
       </router-link>
     </div>
@@ -29,7 +29,12 @@
       </a-menu-item>
       <a-menu-item key="/ticket">
         <router-link to="/ticket">
-          <border-outer-outlined /> &nbsp; 余票查询
+          <user-outlined /> &nbsp; 余票查询
+        </router-link>
+      </a-menu-item>
+      <a-menu-item key="/my-ticket">
+        <router-link to="/my-ticket">
+          <idcard-outlined /> &nbsp; 我的车票
         </router-link>
       </a-menu-item>
     </a-menu>
@@ -37,10 +42,9 @@
 </template>
 
 <script>
-import {defineComponent, ref, watch} from "vue";
+import {defineComponent, ref, watch} from 'vue';
 import store from "@/store";
-import router from "@/router";
-const selectedKeys1 = ref(['2']);
+import router from '@/router'
 
 export default defineComponent({
   name: "the-header-view",
@@ -55,14 +59,14 @@ export default defineComponent({
     }, {immediate: true});
     return {
       member,
-      selectedKeys1,
       selectedKeys
     };
   },
 });
 </script>
 
-<style>
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
 .logo {
   float: left;
   height: 31px;
