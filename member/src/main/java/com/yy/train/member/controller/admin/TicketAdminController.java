@@ -7,21 +7,17 @@ import com.yy.train.member.resp.TicketQueryResp;
 import com.yy.train.member.service.TicketService;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/admin/ticket")
 public class TicketAdminController {
-
     @Resource
     private TicketService ticketService;
 
-    @GetMapping("/query-list")
-    public CommonResp<PageResp<TicketQueryResp>> queryList(@Valid TicketQueryReq req) {
-        PageResp<TicketQueryResp> list = ticketService.queryList(req);
-        return new CommonResp<>(list);
+    @GetMapping ("/query-list")
+    public CommonResp<PageResp<TicketQueryResp>> queryList(@Valid TicketQueryReq ticketQueryReq) {
+        PageResp<TicketQueryResp> pageResp = ticketService.queryList(ticketQueryReq);
+        return new CommonResp<>(pageResp);
     }
-
 }

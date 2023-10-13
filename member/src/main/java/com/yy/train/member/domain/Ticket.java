@@ -11,21 +11,21 @@ public class Ticket {
 
     private String passengerName;
 
-    private Date trainDate;
+    private Date date;
 
     private String trainCode;
 
     private Integer carriageIndex;
 
-    private String seatRow;
+    private String row;
 
-    private String seatCol;
+    private String col;
 
-    private String startStation;
+    private String start;
 
     private Date startTime;
 
-    private String endStation;
+    private String end;
 
     private Date endTime;
 
@@ -67,12 +67,12 @@ public class Ticket {
         this.passengerName = passengerName;
     }
 
-    public Date getTrainDate() {
-        return trainDate;
+    public Date getDate() {
+        return date;
     }
 
-    public void setTrainDate(Date trainDate) {
-        this.trainDate = trainDate;
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public String getTrainCode() {
@@ -91,28 +91,28 @@ public class Ticket {
         this.carriageIndex = carriageIndex;
     }
 
-    public String getSeatRow() {
-        return seatRow;
+    public String getRow() {
+        return row;
     }
 
-    public void setSeatRow(String seatRow) {
-        this.seatRow = seatRow;
+    public void setRow(String row) {
+        this.row = row;
     }
 
-    public String getSeatCol() {
-        return seatCol;
+    public String getCol() {
+        return col;
     }
 
-    public void setSeatCol(String seatCol) {
-        this.seatCol = seatCol;
+    public void setCol(String col) {
+        this.col = col;
     }
 
-    public String getStartStation() {
-        return startStation;
+    public String getStart() {
+        return start;
     }
 
-    public void setStartStation(String startStation) {
-        this.startStation = startStation;
+    public void setStart(String start) {
+        this.start = start;
     }
 
     public Date getStartTime() {
@@ -123,12 +123,12 @@ public class Ticket {
         this.startTime = startTime;
     }
 
-    public String getEndStation() {
-        return endStation;
+    public String getEnd() {
+        return end;
     }
 
-    public void setEndStation(String endStation) {
-        this.endStation = endStation;
+    public void setEnd(String end) {
+        this.end = end;
     }
 
     public Date getEndTime() {
@@ -173,14 +173,14 @@ public class Ticket {
         sb.append(", memberId=").append(memberId);
         sb.append(", passengerId=").append(passengerId);
         sb.append(", passengerName=").append(passengerName);
-        sb.append(", trainDate=").append(trainDate);
+        sb.append(", date=").append(date);
         sb.append(", trainCode=").append(trainCode);
         sb.append(", carriageIndex=").append(carriageIndex);
-        sb.append(", seatRow=").append(seatRow);
-        sb.append(", seatCol=").append(seatCol);
-        sb.append(", startStation=").append(startStation);
+        sb.append(", row=").append(row);
+        sb.append(", col=").append(col);
+        sb.append(", start=").append(start);
         sb.append(", startTime=").append(startTime);
-        sb.append(", endStation=").append(endStation);
+        sb.append(", end=").append(end);
         sb.append(", endTime=").append(endTime);
         sb.append(", seatType=").append(seatType);
         sb.append(", createTime=").append(createTime);
