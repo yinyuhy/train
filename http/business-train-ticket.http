@@ -1,0 +1,7 @@
+GET http://localhost:8000/business/admin/daily-train-ticket/query-list?page=1&size=5&trainCode=G1&start=郑州&end=洛阳
+Content-Type: application/json
+
+###
+
+GET http://localhost:8000/business/admin/daily-train-ticket/query-list2?page=1&size=5&trainCode=G1&start=郑州&end=洛阳
+Content-Type: application/json

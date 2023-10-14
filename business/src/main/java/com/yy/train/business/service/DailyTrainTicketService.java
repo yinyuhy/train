@@ -6,6 +6,7 @@ import cn.hutool.core.date.DateTime;
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.EnumUtil;
 import cn.hutool.core.util.ObjUtil;
+import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yy.train.business.domain.DailyTrain;
@@ -23,6 +24,8 @@ import com.yy.train.common.util.SnowUtil;
 import jakarta.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,58 +43,62 @@ public class DailyTrainTicketService {
     private DailyTrainTicketMapper dailyTrainTicketMapper;
 
     @Resource
-    private DailyTrainSeatService dailyTrainSeatService;
-
-    @Resource
     private TrainStationService trainStationService;
 
-    public void save(DailyTrainTicketSaveReq dailyTrainTicketReq) {
+    @Resource
+    private DailyTrainSeatService dailyTrainSeatService;
+
+    public void save(DailyTrainTicketSaveReq req) {
         DateTime now = DateTime.now();
-        DailyTrainTicket dailyTrainTicket = BeanUtil.copyProperties(dailyTrainTicketReq, DailyTrainTicket.class);
-        if (ObjUtil.isNull(dailyTrainTicketReq.getId())) {
+        DailyTrainTicket dailyTrainTicket = BeanUtil.copyProperties(req, DailyTrainTicket.class);
+        if (ObjectUtil.isNull(dailyTrainTicket.getId())) {
             dailyTrainTicket.setId(SnowUtil.getSnowflakeNextId());
             dailyTrainTicket.setCreateTime(now);
             dailyTrainTicket.setUpdateTime(now);
             dailyTrainTicketMapper.insert(dailyTrainTicket);
-        }else {
+        } else {
             dailyTrainTicket.setUpdateTime(now);
             dailyTrainTicketMapper.updateByPrimaryKey(dailyTrainTicket);
         }
-
     }
 
-    public PageResp<DailyTrainTicketQueryResp> queryList(DailyTrainTicketQueryReq dailyTrainTicketQueryReq) {
+    @CachePut(value = "DailyTrainTicketService.queryList")
+    public PageResp<DailyTrainTicketQueryResp> queryList2(DailyTrainTicketQueryReq req) {
+        return queryList(req);
+    }
+
+    @Cacheable(value = "DailyTrainTicketService.queryList")
+    public PageResp<DailyTrainTicketQueryResp> queryList(DailyTrainTicketQueryReq req) {
         DailyTrainTicketExample dailyTrainTicketExample = new DailyTrainTicketExample();
         dailyTrainTicketExample.setOrderByClause("id desc");
         DailyTrainTicketExample.Criteria criteria = dailyTrainTicketExample.createCriteria();
+        if (ObjUtil.isNotNull(req.getDate())) {
+            criteria.andDateEqualTo(req.getDate());
+        }
+        if (ObjUtil.isNotEmpty(req.getTrainCode())) {
+            criteria.andTrainCodeEqualTo(req.getTrainCode());
+        }
+        if (ObjUtil.isNotEmpty(req.getStart())) {
+            criteria.andStartEqualTo(req.getStart());
+        }
+        if (ObjUtil.isNotEmpty(req.getEnd())) {
+            criteria.andEndEqualTo(req.getEnd());
+        }
 
-        if (ObjUtil.isNotNull(dailyTrainTicketQueryReq.getDate())) {
-            criteria.andDateEqualTo(dailyTrainTicketQueryReq.getDate());
-        }
-        if (ObjUtil.isNotEmpty(dailyTrainTicketQueryReq.getTrainCode())) {
-            criteria.andTrainCodeEqualTo(dailyTrainTicketQueryReq.getTrainCode());
-        }
-        if (ObjUtil.isNotEmpty(dailyTrainTicketQueryReq.getStart())) {
-            criteria.andStartEqualTo(dailyTrainTicketQueryReq.getStart());
-        }
-        if (ObjUtil.isNotEmpty(dailyTrainTicketQueryReq.getEnd())) {
-            criteria.andEndEqualTo(dailyTrainTicketQueryReq.getEnd());
-        }
+        LOG.info("查询页码：{}", req.getPage());
+        LOG.info("每页条数：{}", req.getSize());
+        PageHelper.startPage(req.getPage(), req.getSize());
+        List<DailyTrainTicket> dailyTrainTicketList = dailyTrainTicketMapper.selectByExample(dailyTrainTicketExample);
 
-        LOG.info("查询页码：{}", dailyTrainTicketQueryReq.getPage());
-        LOG.info("查询条数：{}", dailyTrainTicketQueryReq.getSize());
-        PageHelper.startPage(dailyTrainTicketQueryReq.getPage(), dailyTrainTicketQueryReq.getSize());
-        List<DailyTrainTicket> dailyTrainTickets = dailyTrainTicketMapper.selectByExample(dailyTrainTicketExample);
-
-        PageInfo<DailyTrainTicket> pageInfo = new PageInfo<>(dailyTrainTickets);
+        PageInfo<DailyTrainTicket> pageInfo = new PageInfo<>(dailyTrainTicketList);
         LOG.info("总行数：{}", pageInfo.getTotal());
         LOG.info("总页数：{}", pageInfo.getPages());
 
-        List<DailyTrainTicketQueryResp> dailyTrainTicketQueryResps = BeanUtil.copyToList(dailyTrainTickets, DailyTrainTicketQueryResp.class);
+        List<DailyTrainTicketQueryResp> list = BeanUtil.copyToList(dailyTrainTicketList, DailyTrainTicketQueryResp.class);
 
         PageResp<DailyTrainTicketQueryResp> pageResp = new PageResp<>();
-        pageResp.setList(dailyTrainTicketQueryResps);
         pageResp.setTotal(pageInfo.getTotal());
+        pageResp.setList(list);
         return pageResp;
     }
 
