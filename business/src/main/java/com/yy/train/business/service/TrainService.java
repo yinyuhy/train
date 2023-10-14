@@ -92,6 +92,8 @@ public class TrainService {
     @Transactional
     public List<TrainQueryResp> queryAll() {
         List<Train> trains = selectAll();
+//        LOG.info("再查一次");
+//        trains = selectAll();
         return BeanUtil.copyToList(trains, TrainQueryResp.class);
     }
 
