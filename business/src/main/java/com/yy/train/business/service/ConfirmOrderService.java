@@ -101,8 +101,8 @@ public class ConfirmOrderService {
     public void doConfirm(ConfirmOrderDoReq req) {
         // 省略业务数据校验，如：车次是否存在，余票是否存在，车次是否在有效期内，tickets条数>0，同乘客同车次是否已买过
 
-        String key = req.getDate() + "-" + req.getTrainCode();
-        Boolean setIfAbsent = stringRedisTemplate.opsForValue().setIfAbsent(key, key, 3600, TimeUnit.SECONDS);
+        String lockKey = req.getDate() + "-" + req.getTrainCode();
+        Boolean setIfAbsent = stringRedisTemplate.opsForValue().setIfAbsent(lockKey, lockKey, 3600, TimeUnit.SECONDS);
         if (setIfAbsent) {
             LOG.info("恭喜，抢到票了！");
         }else {
@@ -213,7 +213,8 @@ public class ConfirmOrderService {
             LOG.error("保存购票信息失败", e);
             throw new BusinessException(BusinessExceptionEnum.CONFIRM_ORDER_EXCEPTION);
         }
-
+        LOG.info("购票流程结束，释放锁！lockKey: {}", lockKey);
+        stringRedisTemplate.delete(lockKey);
 
     }
 
